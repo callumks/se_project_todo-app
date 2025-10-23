@@ -10,12 +10,23 @@ const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
 const todoTemplate = document.querySelector("#todo-template");
 const todosList = document.querySelector(".todos__list");
 
+const handleEscClose = (evt) => {
+  if (evt.key === "Escape") {
+    const openPopup = document.querySelector(".popup_visible");
+    if (openPopup) {
+      closeModal(openPopup);
+    }
+  }
+};
+
 const openModal = (modal) => {
   modal.classList.add("popup_visible");
+  window.addEventListener("keydown", handleEscClose);
 };
 
 const closeModal = (modal) => {
   modal.classList.remove("popup_visible");
+  window.removeEventListener("keydown", handleEscClose);
 };
 
 // The logic in this function should all be handled in the Todo class.
@@ -45,8 +56,8 @@ addTodoForm.addEventListener("submit", (evt) => {
   const todo = generateTodo(values);
   todosList.append(todo);
   closeModal(addTodoPopup);
-  // Optional: reset and disable button state on submit
-  formValidator.disableSubmitAndReset();
+  // Reset validation and disable submit after successful submission
+  formValidator.resetValidation();
 });
 
 initialTodos.forEach((item) => {
