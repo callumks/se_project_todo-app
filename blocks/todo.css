@@ -68,10 +68,15 @@
   font-weight: 500;
   color: #f44;
   cursor: pointer;
+  transition: opacity 0.2s ease, color 0.2s ease;
 }
 
 .todo__delete-btn::before {
   content: "Delete";
+}
+
+.todo__delete-btn:hover {
+  opacity: 0.8;
 }
 
 @media screen and (max-width: 630px) {
