@@ -2,12 +2,12 @@ import { initialTodos, validationConfig } from "../utils/constants.js";
 import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
+import Section from "../components/Section.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopup = document.querySelector("#add-todo-popup");
 const addTodoForm = addTodoPopup.querySelector(".popup__form");
 const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-const todosList = document.querySelector(".todos__list");
 
 const handleEscClose = (evt) => {
   if (evt.key === "Escape") {
@@ -34,10 +34,18 @@ const generateTodo = (data) => {
   return todo.getView();
 };
 
-const addTodoItem = (data) => {
-  const element = generateTodo(data);
-  todosList.append(element);
-};
+// Create Section instance for todos
+const todosSection = new Section({
+  items: initialTodos,
+  renderer: (data) => {
+    const element = generateTodo(data);
+    todosSection.addItem(element);
+  },
+  containerSelector: ".todos__list",
+});
+
+// Render initial todos
+todosSection.renderItems();
 
 addTodoButton.addEventListener("click", () => {
   openModal(addTodoPopup);
@@ -60,13 +68,12 @@ addTodoForm.addEventListener("submit", (evt) => {
   date.setMinutes(date.getMinutes() + date.getTimezoneOffset());
 
   const values = { id: uuidv4(), name, date };
-  addTodoItem(values);
+  const element = generateTodo(values);
+  todosSection.addItem(element);
   closeModal(addTodoPopup);
   // Reset validation and disable submit after successful submission
   formValidator.resetValidation();
 });
-
-initialTodos.forEach(addTodoItem);
 
 // Enable validation for the add-todo form
 const formValidator = new FormValidator(validationConfig, addTodoForm);
