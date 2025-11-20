@@ -3,30 +3,11 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
+import Popup from "../components/Popup.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
-const addTodoPopup = document.querySelector("#add-todo-popup");
-const addTodoForm = addTodoPopup.querySelector(".popup__form");
-const addTodoCloseBtn = addTodoPopup.querySelector(".popup__close");
-
-const handleEscClose = (evt) => {
-  if (evt.key === "Escape") {
-    const openPopup = document.querySelector(".popup_visible");
-    if (openPopup) {
-      closeModal(openPopup);
-    }
-  }
-};
-
-const openModal = (modal) => {
-  modal.classList.add("popup_visible");
-  window.addEventListener("keydown", handleEscClose);
-};
-
-const closeModal = (modal) => {
-  modal.classList.remove("popup_visible");
-  window.removeEventListener("keydown", handleEscClose);
-};
+const addTodoPopupElement = document.querySelector("#add-todo-popup");
+const addTodoForm = addTodoPopupElement.querySelector(".popup__form");
 
 // The logic in this function should all be handled in the Todo class.
 const generateTodo = (data) => {
@@ -47,12 +28,12 @@ const todosSection = new Section({
 // Render initial todos
 todosSection.renderItems();
 
-addTodoButton.addEventListener("click", () => {
-  openModal(addTodoPopup);
-});
+// Create Popup instance (will be replaced with child class later)
+const addTodoPopup = new Popup("#add-todo-popup");
+addTodoPopup.setEventListeners();
 
-addTodoCloseBtn.addEventListener("click", () => {
-  closeModal(addTodoPopup);
+addTodoButton.addEventListener("click", () => {
+  addTodoPopup.open();
 });
 
 addTodoForm.addEventListener("submit", (evt) => {
@@ -70,7 +51,7 @@ addTodoForm.addEventListener("submit", (evt) => {
   const values = { id: uuidv4(), name, date };
   const element = generateTodo(values);
   todosSection.addItem(element);
-  closeModal(addTodoPopup);
+  addTodoPopup.close();
   // Reset validation and disable submit after successful submission
   formValidator.resetValidation();
 });
