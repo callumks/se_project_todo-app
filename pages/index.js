@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "https://jspm.dev/uuid";
 import Todo from "../components/Todo.js";
 import FormValidator from "../components/FormValidator.js";
 import Section from "../components/Section.js";
-import Popup from "../components/Popup.js";
+import PopupWithForm from "../components/PopupWithForm.js";
 
 const addTodoButton = document.querySelector(".button_action_add");
 const addTodoPopupElement = document.querySelector("#add-todo-popup");
@@ -28,21 +28,17 @@ const todosSection = new Section({
 // Render initial todos
 todosSection.renderItems();
 
-// Create Popup instance (will be replaced with child class later)
-const addTodoPopup = new Popup("#add-todo-popup");
-addTodoPopup.setEventListeners();
+// Declare popup variable first so callback can reference it
+let addTodoPopup;
 
-addTodoButton.addEventListener("click", () => {
-  addTodoPopup.open();
-});
-
-addTodoForm.addEventListener("submit", (evt) => {
-  evt.preventDefault();
+// Handle form submission callback
+const handleAddTodoSubmit = (formValues) => {
   if (!addTodoForm.checkValidity()) {
     return;
   }
-  const name = evt.target.name.value;
-  const dateInput = evt.target.date.value;
+  
+  const name = formValues.name;
+  const dateInput = formValues.date;
 
   // Create a date object and adjust for timezone
   const date = new Date(dateInput);
@@ -54,6 +50,14 @@ addTodoForm.addEventListener("submit", (evt) => {
   addTodoPopup.close();
   // Reset validation and disable submit after successful submission
   formValidator.resetValidation();
+};
+
+// Create PopupWithForm instance
+addTodoPopup = new PopupWithForm("#add-todo-popup", handleAddTodoSubmit);
+addTodoPopup.setEventListeners();
+
+addTodoButton.addEventListener("click", () => {
+  addTodoPopup.open();
 });
 
 // Enable validation for the add-todo form
