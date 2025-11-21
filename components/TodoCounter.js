@@ -3,23 +3,25 @@ export default class TodoCounter {
     this._element = document.querySelector(selector);
     this._completed = todos.filter((todo) => todo.completed).length;
     this._total = todos.length;
+    this._incrementValue = 1;
+    this._decrementValue = 1;
     this._updateText();
   }
 
   updateCompleted = (increment) => {
     if (increment) {
-      this._completed += 1;
+      this._completed += this._incrementValue;
     } else {
-      this._completed -= 1;
+      this._completed -= this._decrementValue;
     }
     this._updateText();
   };
 
   updateTotal = (increment) => {
     if (increment) {
-      this._total += 1;
+      this._total += this._incrementValue;
     } else {
-      this._total -= 1;
+      this._total -= this._decrementValue;
     }
     this._updateText();
   };

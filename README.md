@@ -1,6 +1,6 @@
 # Simple ToDo App
 
-A simple to-do app demonstrating ES6 modules and OOP with `Todo` and `FormValidator` components. Users can add items, set an optional due date, mark items complete, and delete them. Form validation ensures correct input before submission.
+A simple to-do app demonstrating ES6 modules and OOP with `Todo`, `FormValidator`, `Section`, `Popup`, `PopupWithForm`, and `TodoCounter` components. Users can add items, set an optional due date, mark items complete, and delete them. Form validation ensures correct input before submission.
 
 ## Functionality
 
@@ -9,7 +9,8 @@ A simple to-do app demonstrating ES6 modules and OOP with `Todo` and `FormValida
 - Toggles completion status and deletes to-do items.
 - Generates unique IDs for new items via the `uuid` package.
 - Uses the unique IDs to connect checkbox `id` and label `for` attributes.
-- Modal supports closing with the Escape key.
+- Modal supports closing with the Escape key or by clicking the overlay.
+- Displays a counter showing the number of completed todos out of the total.
 
 ## Technology
 
@@ -17,6 +18,10 @@ A simple to-do app demonstrating ES6 modules and OOP with `Todo` and `FormValida
 - JavaScript (ES6 modules, classes)
 - Prettier (with `.prettierignore` to exclude `vendor/normalize.css`)
 - GitHub Pages deployment
+
+## Screenshots
+
+_Screenshots or GIFs demonstrating the project features can be added here._
 
 ## Deployment
 
