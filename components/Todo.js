@@ -1,7 +1,9 @@
 export default class Todo {
-  constructor(data, templateSelector) {
+  constructor(data, templateSelector, handleCheckboxChange, handleDelete) {
     this._data = data;
     this._templateSelector = templateSelector;
+    this._handleCheckboxChange = handleCheckboxChange;
+    this._handleDelete = handleDelete;
     this._element = null;
     this._todoNameEl = null;
     this._todoCheckboxEl = null;
@@ -35,11 +37,19 @@ export default class Todo {
 
   _setEventListeners() {
     this._todoDeleteBtn.addEventListener("click", () => {
+      const wasCompleted = this._data.completed;
       this._element.remove();
+      if (this._handleDelete) {
+        this._handleDelete(wasCompleted);
+      }
     });
 
     this._todoCheckboxEl.addEventListener("change", (evt) => {
+      const wasCompleted = this._data.completed;
       this._data.completed = evt.target.checked;
+      if (this._handleCheckboxChange) {
+        this._handleCheckboxChange(wasCompleted, evt.target.checked);
+      }
     });
   }
 
